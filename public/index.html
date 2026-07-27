@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LinkUp — Cyber Social Platform</title>
-  <meta name="description" content="Connect, share posts, follow creators, and comment in real-time on LinkUp.">
+  <title>LinkUp — Professional Social Network</title>
+  <meta name="description" content="Connect, share updates, follow creators, and discuss tech and design on LinkUp.">
 
-  <!-- Google Fonts: Space Grotesk & Plus Jakarta Sans -->
+  <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -22,8 +22,9 @@
   <!-- Toast Container -->
   <div id="toast-container" class="toast-container"></div>
 
-  <!-- Hidden Native File Input for Device Gallery -->
+  <!-- Hidden Device Gallery Inputs -->
   <input type="file" id="media-file-input" accept="image/*" class="hidden">
+  <input type="file" id="modal-media-file-input" accept="image/*" class="hidden">
 
   <!-- Navbar -->
   <header class="navbar">
@@ -33,7 +34,7 @@
         <span class="brand-name">LinkUp<span class="brand-dot">.</span></span>
       </a>
 
-      <!-- Global Search -->
+      <!-- Search Box -->
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
         <input type="text" id="search-input" placeholder="Search posts, #tags, or creators..." autocomplete="off">
@@ -54,10 +55,10 @@
     </div>
   </header>
 
-  <!-- Stories / Highlights Bar -->
+  <!-- Stories Bar -->
   <div class="stories-bar">
     <div class="stories-container">
-      <div class="story-card add-story">
+      <div class="story-card add-story" id="add-story-btn">
         <div class="story-avatar-wrapper">
           <i class="fa-solid fa-plus"></i>
         </div>
@@ -81,13 +82,13 @@
     </div>
   </div>
 
-  <!-- Main Layout Grid -->
+  <!-- App Layout Grid -->
   <div class="app-layout">
     
     <!-- Left Navigation Sidebar -->
     <aside class="sidebar-left">
       <div class="profile-card-mini">
-        <img id="sidebar-banner" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" class="mini-banner">
+        <div class="mini-banner"></div>
         <div class="mini-profile-body">
           <img id="sidebar-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="mini-avatar">
           <h4 id="sidebar-name">Alex Rivera</h4>
@@ -127,13 +128,12 @@
     <main class="feed-center">
       
       <!-- Composer Card -->
-      <div class="composer-card">
+      <div class="composer-card" id="composer-card-box">
         <div class="composer-header">
           <img id="composer-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="avatar-sm">
-          <textarea id="composer-input" placeholder="What's happening in tech or design?" rows="2"></textarea>
+          <textarea id="composer-input" placeholder="What's on your mind today?" rows="2"></textarea>
         </div>
         
-        <!-- Image Preview Box -->
         <div id="composer-img-preview-box" class="composer-img-preview hidden">
           <img id="composer-preview-img" src="">
           <button id="remove-img-btn" class="remove-img-btn"><i class="fa-solid fa-xmark"></i></button>
@@ -141,8 +141,8 @@
 
         <div class="composer-bottom">
           <div class="composer-tools">
-            <button id="add-img-tool-btn" class="tool-btn" title="Choose Image from Device Gallery"><i class="fa-regular fa-image"></i> Photo / Gallery</button>
-            <button id="sample-img-btn" class="tool-btn" title="Insert Sample Visual"><i class="fa-solid fa-wand-magic-sparkles"></i> Sample Image</button>
+            <button id="add-img-tool-btn" class="tool-btn"><i class="fa-regular fa-image"></i> Photo / Gallery</button>
+            <button id="sample-img-btn" class="tool-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Preset Image</button>
           </div>
           <button id="publish-post-btn" class="btn btn-primary btn-small">Publish <i class="fa-solid fa-paper-plane"></i></button>
         </div>
@@ -161,7 +161,7 @@
       </div>
 
       <div id="empty-feed" class="empty-state hidden">
-        <i class="fa-solid fa-comments empty-icon"></i>
+        <i class="fa-regular fa-comments empty-icon"></i>
         <h3>No posts found in this feed</h3>
         <p>Be the first to share an update or follow creators!</p>
       </div>
@@ -180,7 +180,7 @@
           <span><i class="fa-solid fa-shield-halved"></i> LinkUp Platform</span>
           <span>v1.0.0</span>
         </div>
-        <p>CodeAlpha Internship Task 2 — Cyber-Minimal Social Network.</p>
+        <p>CodeAlpha Internship Task 2 — Professional Social Network.</p>
         <div class="footer-links">
           <a href="#">Privacy</a> &bull; <a href="#">Terms</a> &bull; <a href="#">CodeAlpha</a>
         </div>
@@ -189,11 +189,38 @@
 
   </div>
 
+  <!-- Dedicated Create Post Modal -->
+  <div id="create-post-modal" class="modal-overlay">
+    <div class="modal-container create-post-modal-content">
+      <button id="close-post-modal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      
+      <h3 class="modal-header-title"><i class="fa-solid fa-pen-to-square"></i> Create New Post</h3>
+
+      <div class="composer-header mt-3">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="avatar-sm">
+        <textarea id="modal-composer-input" placeholder="What's happening in tech, code, or design?" rows="4"></textarea>
+      </div>
+
+      <div id="modal-img-preview-box" class="composer-img-preview hidden">
+        <img id="modal-preview-img" src="">
+        <button id="modal-remove-img-btn" class="remove-img-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="composer-bottom mt-3">
+        <div class="composer-tools">
+          <button id="modal-gallery-btn" class="tool-btn"><i class="fa-regular fa-image"></i> Photo / Gallery</button>
+          <button id="modal-sample-btn" class="tool-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Preset Image</button>
+        </div>
+        <button id="modal-publish-btn" class="btn btn-primary btn-small">Publish <i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
   <!-- User Profile Modal -->
   <div id="profile-modal" class="modal-overlay">
     <div class="modal-container profile-modal-content">
       <button id="close-profile-modal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
-      <div id="profile-modal-body"></div>
+      <div id="profile-modal-body" class="profile-scroll-body"></div>
     </div>
   </div>
 

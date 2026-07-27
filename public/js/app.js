@@ -12,7 +12,8 @@ const state = {
   users: [],
   feed: 'all',
   search: '',
-  selectedImg: null
+  selectedImg: null,
+  modalSelectedImg: null
 };
 
 // DOM Elements
@@ -20,7 +21,9 @@ const postsStream = document.getElementById('posts-stream');
 const emptyFeed = document.getElementById('empty-feed');
 const composerInput = document.getElementById('composer-input');
 const publishPostBtn = document.getElementById('publish-post-btn');
+
 const mediaFileInput = document.getElementById('media-file-input');
+const modalMediaFileInput = document.getElementById('modal-media-file-input');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -186,7 +189,7 @@ async function submitComment(id) {
   }
 }
 
-// Create New Post
+// Create New Post (Inline Composer)
 async function createPost() {
   const content = composerInput.value.trim();
   if (!content && !state.selectedImg) {
@@ -211,6 +214,39 @@ async function createPost() {
     composerInput.value = '';
     clearSelectedImg();
     toast('Post published to feed!', 'success');
+  } catch (e) {
+    toast('Failed to publish post', 'warning');
+  }
+}
+
+// Create New Post (Modal Composer)
+async function createModalPost() {
+  const modalInput = document.getElementById('modal-composer-input');
+  const content = modalInput ? modalInput.value.trim() : '';
+
+  if (!content && !state.modalSelectedImg) {
+    toast('Please enter text or select an image', 'warning');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content,
+        image: state.modalSelectedImg,
+        userId: state.currentUser.id
+      })
+    });
+    const data = await res.json();
+    state.posts.unshift(data.post);
+    renderPosts();
+
+    modalInput.value = '';
+    clearModalSelectedImg();
+    closeCreatePostModal();
+    toast('Post published!', 'success');
   } catch (e) {
     toast('Failed to publish post', 'warning');
   }
@@ -285,7 +321,7 @@ async function toggleFollow(username) {
   }
 }
 
-// View User Profile Modal
+// View User Profile Modal (Scrollable)
 async function viewUserProfile(username) {
   try {
     const res = await fetch(`/api/users/${username}`);
@@ -298,7 +334,7 @@ async function viewUserProfile(username) {
 
     body.innerHTML = `
       <div class="profile-hero">
-        <img src="${user.banner}" class="profile-cover-img">
+        <div class="profile-cover-img"></div>
         <div class="profile-header-details">
           <div class="profile-action-row">
             <img src="${user.avatar}" class="profile-main-avatar">
@@ -309,7 +345,7 @@ async function viewUserProfile(username) {
             ` : ''}
           </div>
           <h2>${user.name}</h2>
-          <span style="color:var(--text-dim); font-size:0.85rem;">@${user.username} &bull; Joined ${user.joined}</span>
+          <span style="color:var(--text-dim); font-size:0.82rem;">@${user.username} &bull; Joined ${user.joined}</span>
           <p class="profile-bio">${user.bio}</p>
 
           <div class="profile-stats-bar">
@@ -318,14 +354,14 @@ async function viewUserProfile(username) {
             <div><strong>${user.followingCount}</strong> Following</div>
           </div>
 
-          <h4 style="margin-bottom:12px;"><i class="fa-solid fa-grid-2"></i> Posts by ${user.name}</h4>
+          <h4 style="margin-bottom:12px; font-size:0.9rem;"><i class="fa-regular fa-clone"></i> Posts by ${user.name}</h4>
           <div style="display:flex; flex-direction:column; gap:12px;">
             ${(user.posts || []).map(p => `
-              <div style="background:var(--bg-elevated); padding:12px; border-radius:8px; border:1px solid var(--border-color);">
-                <div style="font-size:0.9rem;">${escapeHTML(p.content)}</div>
-                ${p.image ? `<img src="${p.image}" style="width:100%; max-height:180px; object-fit:cover; border-radius:6px; margin-top:8px;">` : ''}
+              <div style="background:var(--bg-elevated); padding:14px; border-radius:8px; border:1px solid var(--border-color);">
+                <div style="font-size:0.88rem; line-height:1.5;">${escapeHTML(p.content)}</div>
+                ${p.image ? `<img src="${p.image}" style="width:100%; max-height:220px; object-fit:cover; border-radius:6px; margin-top:10px;">` : ''}
               </div>
-            `).join('') || '<p style="color:var(--text-dim);">No posts yet.</p>'}
+            `).join('') || '<p style="color:var(--text-dim); font-size:0.85rem;">No posts yet.</p>'}
           </div>
         </div>
       </div>
@@ -341,6 +377,15 @@ function closeProfileModal() {
   document.getElementById('profile-modal').classList.remove('active');
 }
 
+function openCreatePostModal() {
+  document.getElementById('create-post-modal').classList.add('active');
+  document.getElementById('modal-composer-input').focus();
+}
+
+function closeCreatePostModal() {
+  document.getElementById('create-post-modal').classList.remove('active');
+}
+
 function updateUserBadge() {
   document.getElementById('sidebar-followers').textContent = state.currentUser.followers.length;
   document.getElementById('sidebar-following').textContent = state.currentUser.following.length;
@@ -350,6 +395,12 @@ function clearSelectedImg() {
   state.selectedImg = null;
   if (mediaFileInput) mediaFileInput.value = '';
   document.getElementById('composer-img-preview-box').classList.add('hidden');
+}
+
+function clearModalSelectedImg() {
+  state.modalSelectedImg = null;
+  if (modalMediaFileInput) modalMediaFileInput.value = '';
+  document.getElementById('modal-img-preview-box').classList.add('hidden');
 }
 
 function sharePost(id) {
@@ -371,9 +422,8 @@ function escapeHTML(str) {
 function initEvents() {
   publishPostBtn.addEventListener('click', createPost);
 
-  // Native Device Gallery File Chooser
-  const addImgBtn = document.getElementById('add-img-tool-btn');
-  addImgBtn.addEventListener('click', () => {
+  // Inline Composer Gallery Picker
+  document.getElementById('add-img-tool-btn').addEventListener('click', () => {
     mediaFileInput.click();
   });
 
@@ -391,7 +441,6 @@ function initEvents() {
     }
   });
 
-  // Sample Image Preset Button
   document.getElementById('sample-img-btn').addEventListener('click', () => {
     const samples = [
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
@@ -401,10 +450,46 @@ function initEvents() {
     state.selectedImg = samples[Math.floor(Math.random() * samples.length)];
     document.getElementById('composer-preview-img').src = state.selectedImg;
     document.getElementById('composer-img-preview-box').classList.remove('hidden');
-    toast('Sample image added to post', 'info');
+    toast('Sample image added', 'info');
   });
 
   document.getElementById('remove-img-btn').addEventListener('click', clearSelectedImg);
+
+  // Dedicated Create Post Modal Events
+  document.getElementById('new-post-nav-btn').addEventListener('click', openCreatePostModal);
+  document.getElementById('close-post-modal').addEventListener('click', closeCreatePostModal);
+  document.getElementById('modal-publish-btn').addEventListener('click', createModalPost);
+
+  document.getElementById('modal-gallery-btn').addEventListener('click', () => {
+    modalMediaFileInput.click();
+  });
+
+  modalMediaFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        state.modalSelectedImg = evt.target.result;
+        document.getElementById('modal-preview-img').src = state.modalSelectedImg;
+        document.getElementById('modal-img-preview-box').classList.remove('hidden');
+        toast('Photo selected from device gallery!', 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById('modal-sample-btn').addEventListener('click', () => {
+    const samples = [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80'
+    ];
+    state.modalSelectedImg = samples[Math.floor(Math.random() * samples.length)];
+    document.getElementById('modal-preview-img').src = state.modalSelectedImg;
+    document.getElementById('modal-img-preview-box').classList.remove('hidden');
+  });
+
+  document.getElementById('modal-remove-img-btn').addEventListener('click', clearModalSelectedImg);
 
   // Search
   const searchInput = document.getElementById('search-input');
@@ -442,11 +527,6 @@ function initEvents() {
       state.feed = item.dataset.feed;
       loadPosts();
     });
-  });
-
-  // Modals
-  document.getElementById('new-post-nav-btn').addEventListener('click', () => {
-    composerInput.focus();
   });
 
   document.getElementById('user-profile-nav').addEventListener('click', () => {
