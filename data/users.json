@@ -1,0 +1,46 @@
+[
+  {
+    "id": "u1",
+    "username": "alexrivera",
+    "name": "Alex Rivera",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    "banner": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+    "bio": "Product Designer & Frontend Developer. Crafting high-contrast web experiences. 🚀",
+    "followers": ["u2", "u3", "u4"],
+    "following": ["u2", "u3"],
+    "joined": "March 2026"
+  },
+  {
+    "id": "u2",
+    "username": "sarahcode",
+    "name": "Sarah Chen",
+    "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
+    "banner": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
+    "bio": "Full-stack dev | AI research enthusiast | Coffee & Clean Code ☕",
+    "followers": ["u1", "u4"],
+    "following": ["u1", "u3", "u4"],
+    "joined": "January 2026"
+  },
+  {
+    "id": "u3",
+    "username": "marcus_design",
+    "name": "Marcus Vance",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+    "banner": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80",
+    "bio": "3D Artist & Motion Designer. Building interactive digital spaces.",
+    "followers": ["u1", "u2"],
+    "following": ["u1"],
+    "joined": "February 2026"
+  },
+  {
+    "id": "u4",
+    "username": "elena_dev",
+    "name": "Elena Rostova",
+    "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+    "banner": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+    "bio": "Cybersecurity Specialist & Open Source contributor. 🔐",
+    "followers": ["u2"],
+    "following": ["u1", "u2"],
+    "joined": "April 2026"
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "post_1",
+    "userId": "u1",
+    "username": "alexrivera",
+    "name": "Alex Rivera",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    "content": "Just launched the new LinkUp cyber-minimal UI concept! High contrast, zero friction, pure performance. What do you all think? ⚡✨",
+    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80",
+    "likes": ["u2", "u3", "u4"],
+    "comments": [
+      {
+        "id": "c1",
+        "userId": "u2",
+        "username": "sarahcode",
+        "name": "Sarah Chen",
+        "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
+        "text": "The aesthetic is absolutely insane Alex! 🔥 Loving the dark contrast.",
+        "createdAt": "10 minutes ago"
+      },
+      {
+        "id": "c2",
+        "userId": "u3",
+        "username": "marcus_design",
+        "name": "Marcus Vance",
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+        "text": "Super clean layout. Would love to collaborate on 3D motion for this!",
+        "createdAt": "5 minutes ago"
+      }
+    ],
+    "createdAt": "25 mins ago"
+  },
+  {
+    "id": "post_2",
+    "userId": "u2",
+    "username": "sarahcode",
+    "name": "Sarah Chen",
+    "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
+    "content": "Building real-time full-stack apps with Express & Vanilla JS is so refreshing. Simple, predictable architecture without heavy framework overhead. 💻☕",
+    "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1000&q=80",
+    "likes": ["u1", "u4"],
+    "comments": [
+      {
+        "id": "c3",
+        "userId": "u1",
+        "username": "alexrivera",
+        "name": "Alex Rivera",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "text": "100%! Vanilla JS + Express is elite for speed.",
+        "createdAt": "1 hour ago"
+      }
+    ],
+    "createdAt": "2 hours ago"
+  },
+  {
+    "id": "post_3",
+    "userId": "u3",
+    "username": "marcus_design",
+    "name": "Marcus Vance",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+    "content": "3D render of the week: Neon Echo chamber. Experimenting with emissive materials and raytracing in Blender 🎨",
+    "image": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80",
+    "likes": ["u1", "u2", "u4"],
+    "comments": [],
+    "createdAt": "5 hours ago"
+  }
+]
