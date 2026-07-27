@@ -22,6 +22,9 @@
   <!-- Toast Container -->
   <div id="toast-container" class="toast-container"></div>
 
+  <!-- Hidden Native File Input for Device Gallery -->
+  <input type="file" id="media-file-input" accept="image/*" class="hidden">
+
   <!-- Navbar -->
   <header class="navbar">
     <div class="nav-container">
@@ -83,7 +86,6 @@
     
     <!-- Left Navigation Sidebar -->
     <aside class="sidebar-left">
-      <!-- Mini Profile Badge -->
       <div class="profile-card-mini">
         <img id="sidebar-banner" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" class="mini-banner">
         <div class="mini-profile-body">
@@ -104,14 +106,12 @@
         </div>
       </div>
 
-      <!-- Navigation Menu -->
       <nav class="side-menu">
         <button class="menu-item active" data-feed="all"><i class="fa-solid fa-house"></i> Home Feed</button>
         <button class="menu-item" data-feed="following"><i class="fa-solid fa-users"></i> Following Feed</button>
         <button class="menu-item" data-feed="trending"><i class="fa-solid fa-fire"></i> Trending Posts</button>
       </nav>
 
-      <!-- Trending Hashtags -->
       <div class="trending-box">
         <h4><i class="fa-solid fa-hashtag"></i> Trending Topics</h4>
         <div class="hashtag-list">
@@ -141,8 +141,8 @@
 
         <div class="composer-bottom">
           <div class="composer-tools">
-            <button id="add-img-tool-btn" class="tool-btn" title="Add Image URL"><i class="fa-regular fa-image"></i> Media</button>
-            <button id="sample-img-btn" class="tool-btn" title="Insert Sample Visual"><i class="fa-solid fa-wand-magic-sparkles"></i> Preset Image</button>
+            <button id="add-img-tool-btn" class="tool-btn" title="Choose Image from Device Gallery"><i class="fa-regular fa-image"></i> Photo / Gallery</button>
+            <button id="sample-img-btn" class="tool-btn" title="Insert Sample Visual"><i class="fa-solid fa-wand-magic-sparkles"></i> Sample Image</button>
           </div>
           <button id="publish-post-btn" class="btn btn-primary btn-small">Publish <i class="fa-solid fa-paper-plane"></i></button>
         </div>
@@ -160,7 +160,6 @@
         <!-- Dynamic posts injected here -->
       </div>
 
-      <!-- Empty Feed State -->
       <div id="empty-feed" class="empty-state hidden">
         <i class="fa-solid fa-comments empty-icon"></i>
         <h3>No posts found in this feed</h3>
@@ -169,16 +168,13 @@
 
     </main>
 
-    <!-- Right Sidebar (Who to Follow & Recommendations) -->
+    <!-- Right Sidebar -->
     <aside class="sidebar-right">
       <div class="widget-card">
         <h3><i class="fa-solid fa-user-plus"></i> Suggested Creators</h3>
-        <div id="suggested-users-list" class="suggested-users-list">
-          <!-- Dynamic users injected here -->
-        </div>
+        <div id="suggested-users-list" class="suggested-users-list"></div>
       </div>
 
-      <!-- Platform Info -->
       <div class="widget-card info-widget">
         <div class="info-line">
           <span><i class="fa-solid fa-shield-halved"></i> LinkUp Platform</span>
@@ -197,56 +193,10 @@
   <div id="profile-modal" class="modal-overlay">
     <div class="modal-container profile-modal-content">
       <button id="close-profile-modal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
-      
-      <div id="profile-modal-body">
-        <!-- Dynamic user profile injected here -->
-      </div>
+      <div id="profile-modal-body"></div>
     </div>
   </div>
 
-  <!-- Auth Modal -->
-  <div id="auth-modal" class="modal-overlay">
-    <div class="modal-container auth-modal-content">
-      <button id="close-auth-modal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
-      
-      <div class="auth-tabs">
-        <button id="tab-login-btn" class="auth-tab active">Log In</button>
-        <button id="tab-register-btn" class="auth-tab">Create Account</button>
-      </div>
-
-      <form id="login-form" class="auth-form">
-        <p class="auth-subtext">Sign in to publish posts, like, and comment.</p>
-        <div class="form-group">
-          <label>Username / Email</label>
-          <input type="text" id="login-email" value="alexrivera" required>
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="login-password" value="••••••••" required>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-      </form>
-
-      <form id="register-form" class="auth-form hidden">
-        <p class="auth-subtext">Create your LinkUp creator profile.</p>
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="reg-name" placeholder="Elena Rostova" required>
-        </div>
-        <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="reg-username" placeholder="elena_dev" required>
-        </div>
-        <div class="form-group">
-          <label>Bio</label>
-          <input type="text" id="reg-bio" placeholder="Full-stack dev & open source fan">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- App Script -->
   <script src="js/app.js"></script>
 </body>
 </html>

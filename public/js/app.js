@@ -20,6 +20,7 @@ const postsStream = document.getElementById('posts-stream');
 const emptyFeed = document.getElementById('empty-feed');
 const composerInput = document.getElementById('composer-input');
 const publishPostBtn = document.getElementById('publish-post-btn');
+const mediaFileInput = document.getElementById('media-file-input');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -189,7 +190,7 @@ async function submitComment(id) {
 async function createPost() {
   const content = composerInput.value.trim();
   if (!content && !state.selectedImg) {
-    toast('Please enter text or select an image', 'warning');
+    toast('Please enter text or choose an image', 'warning');
     return;
   }
 
@@ -228,7 +229,7 @@ async function deletePost(id) {
   }
 }
 
-// Load Suggested Creators Bar
+// Load Suggested Creators
 async function loadSuggestedUsers() {
   try {
     const res = await fetch('/api/users');
@@ -340,7 +341,6 @@ function closeProfileModal() {
   document.getElementById('profile-modal').classList.remove('active');
 }
 
-// Helpers & Updates
 function updateUserBadge() {
   document.getElementById('sidebar-followers').textContent = state.currentUser.followers.length;
   document.getElementById('sidebar-following').textContent = state.currentUser.following.length;
@@ -348,6 +348,7 @@ function updateUserBadge() {
 
 function clearSelectedImg() {
   state.selectedImg = null;
+  if (mediaFileInput) mediaFileInput.value = '';
   document.getElementById('composer-img-preview-box').classList.add('hidden');
 }
 
@@ -368,18 +369,29 @@ function escapeHTML(str) {
 
 // Init Events
 function initEvents() {
-  // Composer
   publishPostBtn.addEventListener('click', createPost);
 
-  document.getElementById('add-img-tool-btn').addEventListener('click', () => {
-    const url = prompt('Enter Image URL:');
-    if (url) {
-      state.selectedImg = url;
-      document.getElementById('composer-preview-img').src = url;
-      document.getElementById('composer-img-preview-box').classList.remove('hidden');
+  // Native Device Gallery File Chooser
+  const addImgBtn = document.getElementById('add-img-tool-btn');
+  addImgBtn.addEventListener('click', () => {
+    mediaFileInput.click();
+  });
+
+  mediaFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        state.selectedImg = evt.target.result;
+        document.getElementById('composer-preview-img').src = state.selectedImg;
+        document.getElementById('composer-img-preview-box').classList.remove('hidden');
+        toast('Photo selected from device gallery!', 'success');
+      };
+      reader.readAsDataURL(file);
     }
   });
 
+  // Sample Image Preset Button
   document.getElementById('sample-img-btn').addEventListener('click', () => {
     const samples = [
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
@@ -389,6 +401,7 @@ function initEvents() {
     state.selectedImg = samples[Math.floor(Math.random() * samples.length)];
     document.getElementById('composer-preview-img').src = state.selectedImg;
     document.getElementById('composer-img-preview-box').classList.remove('hidden');
+    toast('Sample image added to post', 'info');
   });
 
   document.getElementById('remove-img-btn').addEventListener('click', clearSelectedImg);
@@ -421,7 +434,7 @@ function initEvents() {
     });
   });
 
-  // Left Sidebar Items
+  // Left Sidebar
   document.querySelectorAll('.menu-item').forEach(item => {
     item.addEventListener('click', () => {
       document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
